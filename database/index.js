@@ -3,6 +3,10 @@ mongoose.connect('mongodb://localhost/fetcher');
 
 let repoSchema = mongoose.Schema({
   // TODO: your schema here!
+  id: Number, //Number, which is received from the API call
+  owner: String, //user's github handle
+  url: String,//url of the user's page
+  repos: [{name: String, repoUrl: String, createdAt: Date, updatedAt: Date}] //an array of the owner's repos[{}, {}, {}] //each repo should have {name, repoUrl, createdAt, updatedAt}
 });
 
 let Repo = mongoose.model('Repo', repoSchema);
