@@ -16,26 +16,23 @@ let save = (dataString) => {
   // This function should save a repo or repos to
   // the MongoDB
   var arrayOfRepos = [];
-  //var necessaryFields = ['id', 'owner', 'url', '"repoData.repoName"', '"repoData.repoUrl"', '"repoData.createdAt"', '"repoData.updatedAt"'];
+  var necessaryFields = ['repoName', 'repoUrl', 'createdAt', 'updatedAt'];
+  var apiDataVarNames = ['name', 'html_url', 'created_at', 'updated_at'];
   var data = JSON.parse(dataString);
   var id;
   var owner;
   var url;
   for (var i = 0; i < data.length; i++) {
     var repo = {};
-    //for (var j = 0; j < necessaryFields.length; j++) {
-      //repo[necessaryFields[j]] = data[i][necessaryFields[j]]; //doesn't work to insert into subobject due to bracket notation
-    //}
+    for (var j = 0; j < necessaryFields.length; j++) {
+      repo[necessaryFields[j]] = data[i][apiDataVarNames[j]]; //doesn't work to insert into subobject due to bracket notation
+    }
     id = data[i].id;
     owner = data[i].owner.login;
     url = data[i].owner.html_url;
-    repo.repoName = data[i].name;
-    repo.repoUrl = data[i].html_url;
-    repo.createdAt = data[i].created_at;
-    repo.updatedAt = data[i].updated_at;
     arrayOfRepos.push(repo);
   }
-    console.log('this is', arrayOfRepos);
+  console.log(arrayOfRepos);
     for (var j = 0; j < arrayOfRepos.length; j++) {
       var objectToInsert = {
         id: id,
@@ -49,17 +46,17 @@ let save = (dataString) => {
         if (error) {
           console.log('error saving to mongob', error);
         } else {
-          console.log('successfully saved this record');
+          console.log('successfully saved this record', instance);
         }
       });
 
-    Repo.find(function(error, repos) {
-      if (error) {
-        console.log('error finding the repos', error);
-      } else {
-        console.log('here are the repos', JSON.stringify(repos));
-      }
-    })
+    // Repo.find(function(error, repos) {
+    //   if (error) {
+    //     console.log('error finding the repos', error);
+    //   } else {
+    //     console.log('here are the repos');
+    //   }
+    // });
 }
 
 module.exports.save = save;
