@@ -18,21 +18,48 @@ let save = (dataString) => {
   var arrayOfRepos = [];
   //var necessaryFields = ['id', 'owner', 'url', '"repoData.repoName"', '"repoData.repoUrl"', '"repoData.createdAt"', '"repoData.updatedAt"'];
   var data = JSON.parse(dataString);
+  var id;
+  var owner;
+  var url;
   for (var i = 0; i < data.length; i++) {
-    var repo = {repoData: {}};
+    var repo = {};
     //for (var j = 0; j < necessaryFields.length; j++) {
       //repo[necessaryFields[j]] = data[i][necessaryFields[j]]; //doesn't work to insert into subobject due to bracket notation
     //}
-    repo.id = data[i].id;
-    repo.owner = data[i].owner.login;
-    repo.url = data[i].owner.html_url;
-    repo.repoData.repoName = data[i].name;
-    repo.repoData.repoUrl = data[i].html_url;
-    repo.repoData.createdAt = data[i].created_at;
-    repo.repoData.updatedAt = data[i].updated_at;
+    id = data[i].id;
+    owner = data[i].owner.login;
+    url = data[i].owner.html_url;
+    repo.repoName = data[i].name;
+    repo.repoUrl = data[i].html_url;
+    repo.createdAt = data[i].created_at;
+    repo.updatedAt = data[i].updated_at;
     arrayOfRepos.push(repo);
   }
     console.log('this is', arrayOfRepos);
+    for (var j = 0; j < arrayOfRepos.length; j++) {
+      var objectToInsert = {
+        id: id,
+        owner: owner,
+        url: url, 
+        repos: arrayOfRepos
+      };
+      var repoInstance = new Repo(objectToInsert);
+    }
+      repoInstance.save(function(error, instance) {
+        if (error) {
+          console.log('error saving to mongob', error);
+        } else {
+          console.log('successfully saved this record');
+        }
+      });
+
+    Repo.find(function(error, repos) {
+      if (error) {
+        console.log('error finding the repos', error);
+      } else {
+        console.log('here are the repos', JSON.stringify(repos));
+      }
+    })
 }
 
 module.exports.save = save;
