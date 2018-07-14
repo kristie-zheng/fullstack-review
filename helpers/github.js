@@ -4,22 +4,21 @@ const config = require('../config.js');
 var jquery = require('jquery');
 
 let getReposByUsername = (username) => {
-  console.log('HEY');
-  console.log(jquery);
+  console.log('un', username);
   // The options object has been provided to help you out, but you'll have to fill in the URL
   let options = {
-    url: 'https://api.github.com/users/zhengjames/repos',
+    url: 'https://api.github.com/users/' + username + '/repos',
     headers: {
       'User-Agent': 'request',
       'Authorization': `token ${config.TOKEN}`
     }
   };
-
+  console.log('here', options.url)
   request(options, function(error, response, body){
     if (error) {
       console.log('error', error);
     } else {
-      console.log('success', response)
+      console.log('success', response);
     }
   })
 
