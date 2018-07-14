@@ -2,15 +2,21 @@ import React from 'react';
 
 
 var RepoListEntry = (props) => {
-  //var repo = props.repo;
+  console.log(props)
   return (
   <div>
   <h4>Here is a repo list entry</h4>
   <ul>
-    <li> </li>
-    <li> </li>
-    <li> </li>
-    <li> </li>
+    <li>Username: </li>
+    <li>GitHub Link: </li>
+    <li> Repos: 
+    <ul> 
+      <li>Name: </li>
+      <li>URL: </li>
+      <li>Created at: </li>
+      <li>Last Updated: </li>
+    </ul>
+      </li>
     </ul>
   </div>
   )
