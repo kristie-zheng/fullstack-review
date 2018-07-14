@@ -16,9 +16,13 @@ let save = (dataString) => {
   // This function should save a repo or repos to
   // the MongoDB
   var arrayOfRepos = [];
+  //var necessaryFields = ['id', 'owner', 'url', '"repoData.repoName"', '"repoData.repoUrl"', '"repoData.createdAt"', '"repoData.updatedAt"'];
   var data = JSON.parse(dataString);
   for (var i = 0; i < data.length; i++) {
     var repo = {repoData: {}};
+    //for (var j = 0; j < necessaryFields.length; j++) {
+      //repo[necessaryFields[j]] = data[i][necessaryFields[j]]; //doesn't work to insert into subobject due to bracket notation
+    //}
     repo.id = data[i].id;
     repo.owner = data[i].owner.login;
     repo.url = data[i].owner.html_url;
@@ -26,7 +30,6 @@ let save = (dataString) => {
     repo.repoData.repoUrl = data[i].html_url;
     repo.repoData.createdAt = data[i].created_at;
     repo.repoData.updatedAt = data[i].updated_at;
-    
     arrayOfRepos.push(repo);
   }
     console.log('this is', arrayOfRepos);
