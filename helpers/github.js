@@ -1,7 +1,5 @@
 const request = require('request');
 const config = require('../config.js');
-// var $ = require('../node_modules/jquery/dist/jquery.js');
-var jquery = require('jquery');
 
 let getReposByUsername = (username) => {
   console.log('un', username);
