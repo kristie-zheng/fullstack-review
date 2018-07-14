@@ -1,8 +1,8 @@
 const request = require('request');
 const config = require('../config.js');
+const mongodatabase = require('../database/index.js')
 
 let getReposByUsername = (username) => {
-  console.log('un', username);
   // The options object has been provided to help you out, but you'll have to fill in the URL
   let options = {
     url: 'https://api.github.com/users/' + username + '/repos',
@@ -11,12 +11,14 @@ let getReposByUsername = (username) => {
       'Authorization': `token ${config.TOKEN}`
     }
   };
-  console.log('here', options.url)
+
+  //the result of the request is sent to the 'save' function in the DB module
   request(options, function(error, response, body){
     if (error) {
       console.log('error', error);
     } else {
-      console.log('success', response);
+      console.log('success', body);
+      mongodatabase.save(body);
     }
   })
 
