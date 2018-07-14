@@ -2,7 +2,6 @@ import React from 'react';
 
 
 var RepoListEntry = (props) => {
-  console.log(props)
   return (
   <div>
   <h4>Here is a repo list entry</h4>
@@ -12,7 +11,7 @@ var RepoListEntry = (props) => {
     <li> Repos: 
     <ul> 
       <li>Name: </li>
-      <li>URL: </li>
+      <li>URL: <a href='github.com'/>here goes the url</li>
       <li>Created at: </li>
       <li>Last Updated: </li>
     </ul>

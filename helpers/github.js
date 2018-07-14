@@ -17,7 +17,7 @@ let getReposByUsername = (username) => {
     if (error) {
       console.log('error', error);
     } else {
-      console.log('success', body);
+      console.log('successfully retrieved data from github api');
       mongodatabase.save(body);
     }
   })

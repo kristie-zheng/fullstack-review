@@ -23,6 +23,8 @@ app.post('/repos', function (req, res) {
 app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
+  //get the repos from the database, specifically the 25 most recently updated
+  //this set of repos, an array, needs to be set as a state variable for the repoList view
 });
 
 let port = 1128;
