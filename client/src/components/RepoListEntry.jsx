@@ -6,10 +6,9 @@ var RepoListEntry = (props) => {
   console.log(repo)
   return (
   <div>
-  <h4>Here is a repo list entry</h4>
+  <h4>{repo.repoName}</h4>
   <ul> 
-    <li>Name: {repo.repoName}</li>
-    <li>URL: <a href='github.com'/>{repo.repoUrl}</li>
+    <li>URL: <a href={repo.repoUrl}>{repo.repoUrl}</a></li>
     <li>Created By: {repo.owner}</li>
     <li>Created at: {repo.createdAt} </li>
     <li>Last Updated: {repo.updatedAt} </li>
@@ -19,3 +18,4 @@ var RepoListEntry = (props) => {
 }
 
 export default RepoListEntry;
+

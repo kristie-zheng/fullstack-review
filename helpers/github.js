@@ -20,11 +20,8 @@ let getReposByUsername = (username) => {
       console.log('successfully retrieved data from github api');
       mongodatabase.save(body);
     }
-  })
-
-}
+  });
+};
 
 module.exports = getReposByUsername;
 
-  // TODO - Use the request module to request repos for a specific
-  // user from the github API

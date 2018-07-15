@@ -17,7 +17,7 @@ let repoSchema = mongoose.Schema({
 
 let Repo = mongoose.model('Repo', repoSchema);
 
-let save = (dataString) => {
+let save = (dataString, callback) => {
   // This function should save a repo or repos to the MongoDB
   var data = JSON.parse(dataString);
   var repoInstances = createRepoInstances(data);
@@ -28,11 +28,12 @@ let save = (dataString) => {
         console.log('error saving to mongob', error);
       } else {
         console.log('successfully saved this record'/*, instance*/);
-        Repo.find().limit(6).sort({updatedAt: -1}).exec(function(error, repos) {
+        Repo.find().limit(25).sort({updatedAt: -1}).exec(function(error, repos) {
           if (error) {
             console.log('error finding the repos', error);
           } else {
             console.log('here are the repos', JSON.stringify(repos, null, 2));
+            //callback(null, repos);
           }
         });
       }

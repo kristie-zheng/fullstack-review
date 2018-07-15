@@ -15,6 +15,7 @@ class App extends React.Component {
   }
 
   search (term) {
+    let context = this;
     console.log(`${term} was searched`);
     $.ajax('/repos', {
       method: 'POST',
@@ -24,6 +25,7 @@ class App extends React.Component {
       },
       success: function(data) {
         console.log('successfully posted. this was returned from server', data);
+        //context.handleGetRequest();
       }
     });
   }
@@ -33,7 +35,7 @@ class App extends React.Component {
   }
 
   handleGetRequest () {
-    var context = this;
+    let context = this;
     $.ajax('/repos', {
       method: 'GET',
       error: function(error) {
