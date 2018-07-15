@@ -68,7 +68,7 @@ let createRepoInstances = (data) => {
 };
 
 let query = (callback) => {
-  Repo.find().limit(3).sort({updatedAt: -1}).exec(function(error, repos) {
+  Repo.find().limit(25).sort({updatedAt: -1}).exec(function(error, repos) {
     if (error) {
       console.log('error fetching', error);
       callback(error, null);

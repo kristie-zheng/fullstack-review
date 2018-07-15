@@ -10,7 +10,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      repos: [{a: 1}, {b: 2}, {c:3}]
+      repos: []
     };
   }
 
@@ -33,6 +33,7 @@ class App extends React.Component {
   }
 
   handleGetRequest () {
+    var context = this;
     $.ajax('/repos', {
       method: 'GET',
       error: function(error) {
@@ -40,6 +41,7 @@ class App extends React.Component {
       },
       success: function(data) {
         console.log('successfully gotten', data);
+        context.setState({repos: data});
       }
     });
   }
