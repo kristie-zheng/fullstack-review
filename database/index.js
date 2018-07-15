@@ -13,16 +13,12 @@ let repoSchema = mongoose.Schema({
   updatedAt: Date
 });
 
-delete repoSchema['repos'];
-
-console.log('HERE IS SCHEMA', JSON.stringify(repoSchema));
+// console.log('HERE IS SCHEMA', JSON.stringify(repoSchema));
 
 let Repo = mongoose.model('Repo', repoSchema);
 
 let save = (dataString) => {
-  // TODO: Your code here
   // This function should save a repo or repos to the MongoDB
- 
   var data = JSON.parse(dataString);
   var repoInstances = createRepoInstances(data);
   for (var i = 0; i < repoInstances.length; i++) {
@@ -32,7 +28,7 @@ let save = (dataString) => {
         console.log('error saving to mongob', error);
       } else {
         console.log('successfully saved this record'/*, instance*/);
-        Repo.find().sort('updatedAt').limit(6).exec(function(error, repos) {
+        Repo.find().limit(6).sort({updatedAt: -1}).exec(function(error, repos) {
           if (error) {
             console.log('error finding the repos', error);
           } else {
@@ -67,9 +63,21 @@ let createRepoInstances = (data) => {
     repoInstances.push(repoInstance);
     //console.log('HERE IS A Array of REPO INSTANCE', repoInstances);
   }
-
   // repoInstance.repos.push(arrayOfRepos[]);
   return repoInstances;
 };
 
+let query = (callback) => {
+  Repo.find().limit(3).sort({updatedAt: -1}).exec(function(error, repos) {
+    if (error) {
+      console.log('error fetching', error);
+      callback(error, null);
+    } else {
+      console.log('got the repos', repos);
+      callback(null, repos);
+    }
+  })
+}
+
 module.exports.save = save;
+module.exports.query = query;

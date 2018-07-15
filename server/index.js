@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const getReposByUsername = require('../helpers/github');
-var jquery = require('jquery');
+const $ = require('jquery');
+const mongodatabase = require('../database/index.js')
 let app = express();
 
 app.use(bodyParser.json());
@@ -11,10 +12,6 @@ app.use(express.static(__dirname + '/../client/dist'));
 app.use(express.static(__dirname + '../node_modules/'));
 
 app.post('/repos', function (req, res) {
-  // TODO - your code here!
-  // This route should take the github username provided
-  // and get the repo information from the github API, then
-  // save the repo information in the database
   var githubHandle = getReposByUsername(Object.keys(req.body)[0].slice(1, -1));
   res.send(req.body);
   res.end(githubHandle);
@@ -24,8 +21,22 @@ app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
   //get the repos from the database, specifically the 25 most recently updated
-  //this set of repos, an array, needs to be set as a state variable for the repoList view
+  //this set of repos, an array [send by mongodb], needs to be set as a state variable for the repoList view
+  //var 
+  //res.send()
+  
+  mongodatabase.query(function(error, data) {
+    if (error) {
+      res.send('error with query!');
+      return;
+    } else {
+      console.log('data returned from query!', data);
+      res.send(data);
+    }
+    res.end();
+  });
 });
+
 
 let port = 1128;
 

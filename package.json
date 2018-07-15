@@ -25,5 +25,12 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "request": "^2.81.0"
+  },
+  "eslintConfig": {
+    "parserOptions" : {
+      "ecmaVersion": 6},
+    "rules": {
+      "indent": ["error", 2]
+    }
   }
 }
