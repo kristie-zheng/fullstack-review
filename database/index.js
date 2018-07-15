@@ -1,13 +1,21 @@
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/fetcher');
 
+
 let repoSchema = mongoose.Schema({
   // TODO: your schema here!
-  id: {type: Number, unique: true}, //Number, which is received from the API call
+  repoId: {type: Number, unique: true}, //Number, which is received from the API call
+  ownerId: Number, //user's github id
   owner: String, //user's github handle
-  url: String,//url of the user's page
-  repos: [{repoName: String, repoUrl: String, createdAt: Date, updatedAt: Date}] //an array of the owner's repos[{}, {}, {}] //each repo should have {name, repoUrl, createdAt, updatedAt}
+  repoUrl: String, //url of the user's page
+  repoName: String,
+  createdAt: Date,
+  updatedAt: Date
 });
+
+delete repoSchema['repos'];
+
+console.log('HERE IS SCHEMA', JSON.stringify(repoSchema));
 
 let Repo = mongoose.model('Repo', repoSchema);
 
@@ -16,50 +24,52 @@ let save = (dataString) => {
   // This function should save a repo or repos to the MongoDB
  
   var data = JSON.parse(dataString);
-  var repoInstance = createRepoInstance(data);
-  // console.log('HERE IS the repo instance', repoInstance);
-  // repoInstance.save(function(error, instance) {
-  //   if (error) {
-  //     console.log('error saving to mongob', error);
-  //   } else {
-  //     console.log('successfully saved this record', instance);
-  //   }
-  // });
-
-    // Repo.find({}).sort('repos.updatedAt').limit(2).exec(function(error, repos) {
-    //   if (error) {
-    //     console.log('error finding the repos', error);
-    //   } else {
-    //     console.log('here are the repos', JSON.stringify(repos));
-    //   }
-    // });
+  var repoInstances = createRepoInstances(data);
+  for (var i = 0; i < repoInstances.length; i++) {
+    var repoInstance = repoInstances[i];
+    repoInstance.save(function(error, instance) {
+      if (error) {
+        console.log('error saving to mongob', error);
+      } else {
+        console.log('successfully saved this record'/*, instance*/);
+        Repo.find().sort('updatedAt').limit(6).exec(function(error, repos) {
+          if (error) {
+            console.log('error finding the repos', error);
+          } else {
+            console.log('here are the repos', JSON.stringify(repos, null, 2));
+          }
+        });
+      }
+    });
+  
+  }
+  
 };
 
-let createRepoInstance = (data) => {
+let createRepoInstances = (data) => {
   var arrayOfRepos = [];
-  var arrayOfRepoInstances = [];
-  var necessaryFields = ['repoName', 'repoUrl', 'createdAt', 'updatedAt'];
-  var apiDataVarNames = ['name', 'html_url', 'created_at', 'updated_at'];
+  var repoInstances = [];
+  var necessaryFields = ['repoId', 'repoUrl', 'repoName', 'createdAt', 'updatedAt'];
+  var apiDataVarNames = ['id', 'html_url', 'name', 'created_at', 'updated_at'];
+  var fieldsWithSub = ['ownerId', 'owner'];
+  var apiDataWithSub = ['owner.id', 'owner.login'];
 
   for (var i = 0; i < data.length; i++) {
     var repo = {};
     for (let j = 0; j < necessaryFields.length; j++) {
       repo[necessaryFields[j]] = data[i][apiDataVarNames[j]];
     }
-    var id = data[i].id;
-    var owner = data[i].owner.login;
-    var url = data[i].owner.html_url;
+    repo.ownerId = data[i].owner.id;
+    //console.log('OWNER ID', data[i].owner.id);
+    repo.owner = data[i].owner.login;
     arrayOfRepos.push(repo);
+    repoInstance = new Repo(repo);
+    repoInstances.push(repoInstance);
+    //console.log('HERE IS A Array of REPO INSTANCE', repoInstances);
   }
-  var repoInstance;
-  var objectToInsert = {
-    id: id,
-    owner: owner,
-    url: url, 
-    repos: arrayOfRepos
-  };
-  repoInstance = new Repo(objectToInsert);
-  return repoInstance;
+
+  // repoInstance.repos.push(arrayOfRepos[]);
+  return repoInstances;
 };
 
 module.exports.save = save;
