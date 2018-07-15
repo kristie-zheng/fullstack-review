@@ -11,8 +11,7 @@ class App extends React.Component {
     super(props);
     this.state = { 
       repos: [{a: 1}, {b: 2}, {c:3}]
-    }
-
+    };
   }
 
   search (term) {
@@ -33,6 +32,18 @@ class App extends React.Component {
     console.log(event.target.value);
   }
 
+  handleGetRequest () {
+    $.ajax('/repos', {
+      method: 'GET',
+      error: function(error) {
+        console.log('error with get req', error);
+      },
+      success: function(data) {
+        console.log('successfully gotten', data);
+      }
+    });
+  }
+
   render () {
     return (<div>
       <h1>Github Fetcher</h1>
@@ -40,6 +51,11 @@ class App extends React.Component {
       <Search onSearch={this.search.bind(this)}/>
     </div>)
   }
+  
+  componentDidMount() {
+    this.handleGetRequest();
+  }
 }
+
 
 ReactDOM.render(<App />, document.getElementById('app'));
