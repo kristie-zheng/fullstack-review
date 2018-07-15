@@ -3,7 +3,6 @@ import React from 'react';
 
 var RepoListEntry = (props) => {
   var repo = props.repo;
-  console.log(repo)
   return (
   <div>
   <h4>{repo.repoName}</h4>

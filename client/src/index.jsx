@@ -12,6 +12,8 @@ class App extends React.Component {
     this.state = { 
       repos: []
     };
+    this.handleGetRequest = this.handleGetRequest.bind(this);
+
   }
 
   search (term) {
@@ -25,7 +27,8 @@ class App extends React.Component {
       },
       success: function(data) {
         console.log('successfully posted. this was returned from server', data);
-        //context.handleGetRequest();
+        console.log(context);
+        context.handleGetRequest();
       }
     });
   }
@@ -35,7 +38,8 @@ class App extends React.Component {
   }
 
   handleGetRequest () {
-    let context = this;
+    var context = this;
+    console.log('context is', context);
     $.ajax('/repos', {
       method: 'GET',
       error: function(error) {
@@ -43,6 +47,7 @@ class App extends React.Component {
       },
       success: function(data) {
         console.log('successfully gotten', data);
+        console.log('about to set the state!')
         context.setState({repos: data});
       }
     });
